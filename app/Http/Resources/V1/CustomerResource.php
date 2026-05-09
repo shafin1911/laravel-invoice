@@ -22,7 +22,14 @@ class CustomerResource extends JsonResource
             'address' => $this->address,
             'city' => $this->city,
             'state' => $this->state,
-            'postalCode' => $this->postal_code
+            'postalCode' => $this->postal_code,
+
+            'invoices' => $this->whenLoaded('invoices', function () {
+                return [
+                    'total_amount' => $this->invoices->sum('amount'),
+                    'count' => $this->invoices->count(),
+                ];
+            })
         ];
     }
 }
