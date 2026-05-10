@@ -18,14 +18,14 @@ class InvoiceFactory extends Factory
      */
     public function definition(): array
     {
-        $status = $this->faker->randomElement(['billed', 'paid', 'Void']);
+        $status = $this->faker->randomElement(['billed', 'paid', 'void', 'Billed', 'Paid', 'Void']);
 
         return [
             'customer_id' => Customer::factory(),
             'amount' => $this->faker->numberBetween(100, 20000),
             'status' => $status,
             'billed_date' => $this->faker->dateTime(),
-            'paid_date' => $status == 'paid' ? $this->faker->dateTimeThisDecade() : NULL,
+            'paid_date' => $status->toLowerCase() == 'paid' ? $this->faker->dateTimeThisDecade() : NULL,
         ];
     }
 }

@@ -15,12 +15,11 @@ return new class extends Migration
             $table->id();
             $table->integer('customer_id');
             $table->integer('amount');
-            $table->string('status'); // billed, paid, Void
+            $table->string('status'); // billed, paid, void
             $table->datetime('billed_date');
             $table->datetime('paid_date')->nullable();
 
             $table->timestamps();
-
         });
     }
 

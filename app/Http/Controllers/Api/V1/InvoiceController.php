@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Api\V1;
 use App\Filters\V1\InvoicesFilter;
 use App\Models\Invoice;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\BulkStoreInvoiceRequest;
 use App\Http\Resources\V1\InvoiceResource;
 use App\Http\Resources\V1\InvoiceCollection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class InvoiceController extends Controller
 {
@@ -35,6 +37,25 @@ class InvoiceController extends Controller
     // {
     //     //
     // }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function bulkStore(BulkStoreInvoiceRequest $request)
+    {
+        $data = collect($request->all());
+
+        $bulk = $data->map(function ($arr, $key) {
+            return Arr::except($arr, ['customerId', 'billedDate', 'paidDate']);
+        });
+
+        Invoice::insert($bulk->toArray());
+
+        $customerId = $data->pluck('customer_id');
+        $customerinvoices = Invoice::whereIn('customer_id', $customerId)->get();
+
+        return InvoiceResource::collection($customerinvoices);
+    }
 
     /**
      * Display the specified resource.

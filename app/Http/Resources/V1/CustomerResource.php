@@ -24,12 +24,13 @@ class CustomerResource extends JsonResource
             'state' => $this->state,
             'postalCode' => $this->postal_code,
 
-            'invoices' => $this->whenLoaded('invoices', function () {
-                return [
-                    'total_amount' => $this->invoices->sum('amount'),
-                    'count' => $this->invoices->count(),
-                ];
-            })
+            'invoices' => $this->whenLoaded('invoices')
+            // function () {
+            //     return [
+            //         'total_amount' => $this->invoices->sum('amount'),
+            //         'count' => $this->invoices->count(),
+            //     ];
+            // })
         ];
     }
 }
