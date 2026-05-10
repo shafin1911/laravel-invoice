@@ -29,9 +29,9 @@ Route::get('/setup', function () {
             $user = Auth::user();
             \assert($user instanceof \App\Models\User);
 
-            $adminToken = $user->createToken('admin-token', ['create', 'update', 'delete']);
-            $updateToken = $user->createToken('update-token', ['create', 'update']);
-            $basicToken = $user->createToken('basic-token');
+            $adminToken = $user->createToken('admin-token', ['create', 'update', 'delete', 'read']);
+            $updateToken = $user->createToken('update-token', ['create', 'update', 'read']);
+            $basicToken = $user->createToken('basic-token', ['read']);
 
             return [
                 'admin' => $adminToken->plainTextToken,
